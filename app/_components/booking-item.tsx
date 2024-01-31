@@ -6,7 +6,7 @@ const BookingItem = () => {
     return ( 
         <Card>
             <CardContent className="py-0 flex justify-between">
-                <div className="flex flex-col gap-2 p-5">
+                <div className="flex flex-col gap-2 py-3">
                     <Badge className="bg-[#221C3D] text-primary hover:bg-[#221C3D] w-fit">Confirmado</Badge>
                     <h2 className="font-bold">Corte de cabelo</h2>
 
