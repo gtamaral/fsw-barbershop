@@ -38,10 +38,10 @@ export default async function Home() {
         <BookingItem />
       </div>
 
-      <div className="px-5 mt-6">
-        <h2 className="text-xs mb-3 uppercase text-gray-400 font-bold">Recomendados</h2>
+      <div className="mt-6">
+        <h2 className="text-xs px-5 mb-3 uppercase text-gray-400 font-bold">Recomendados</h2>
 
-        <div className="flex gap-2 overflow-x-auto [&::-webkit-scrollbar]:hidden">
+        <div className="flex gap-2 px-5 overflow-x-auto [&::-webkit-scrollbar]:hidden">
           {barbershops.map((barbershop) => (            
               <BarbershopItem key={barbershop.id} barbershop={barbershop}/>
           ))}
