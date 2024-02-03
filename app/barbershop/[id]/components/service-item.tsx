@@ -1,14 +1,25 @@
+
+"use client"
+
 import { Button } from "@/app/_components/ui/button";
 import { Card, CardContent } from "@/app/_components/ui/card";
 import { Service } from "@prisma/client";
 import { intlFormat } from "date-fns/intlFormat";
+import { Router } from "lucide-react";
+import { signIn } from "next-auth/react";
 import Image from "next/image";
 
 interface ServiceItemProps {
-    service: Service
+    service: Service;
+    isAuth: boolean; 
 }
 
-const ServiceItem = ({service}: ServiceItemProps) => {
+const ServiceItem = ({service, isAuth}: ServiceItemProps) => {
+    const handleBookingClick = () => {
+        if (!isAuth) {
+            signIn("google")
+        }
+    }
     const formattedPrice = new Intl.NumberFormat('pt-BR', {
         style: 'currency',
         currency: 'BRL',
@@ -28,9 +39,8 @@ const ServiceItem = ({service}: ServiceItemProps) => {
 
                         <div className="flex items-center justify-between mt-3">
                             <p className="text-primary font-bold text-sm">{formattedPrice}</p>
-                            <Button variant="secondary">
-                                Reservar
-                            </Button>
+                            <Button variant="secondary" onClick={handleBookingClick}>Reservar</Button>
+                            
                         </div>
                     </div>
                 </div>
