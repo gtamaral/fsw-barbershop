@@ -8,7 +8,7 @@ import { SheetTrigger, Sheet, SheetContent, SheetHeader, SheetTitle, SheetFooter
 import { Barbershop, Service } from "@prisma/client";
 import { intlFormat } from "date-fns/intlFormat";
 import { ptBR } from "date-fns/locale";
-import { Router } from "lucide-react";
+import { Loader2, Router } from "lucide-react";
 import { signIn, useSession } from "next-auth/react";
 import Image from "next/image";
 import React, { useMemo, useState } from "react";
@@ -28,6 +28,8 @@ const ServiceItem = ({ service, barbershop, isAuth}: ServiceItemProps) => {
 
     const [date, setDate] = useState<Date | undefined>(undefined)
     const [hour, setHour] = useState<string | undefined>()
+
+    const [submitIsLoading, setSubmitIsLoading] = useState(false)
     
     const handleDateClick = (date: Date | undefined) => {
         setDate(date)
@@ -45,6 +47,7 @@ const ServiceItem = ({ service, barbershop, isAuth}: ServiceItemProps) => {
     }
 
     const handleBookingSubmit = async() => {
+        setSubmitIsLoading(true)
         try {
             if (!hour || !date || !data?.user) {
                 return 
@@ -58,12 +61,14 @@ const ServiceItem = ({ service, barbershop, isAuth}: ServiceItemProps) => {
             await saveBooking({
                 serviceId: service.id,
                 barbershopId: barbershop.id,
-                date: newDate as any,
+                date: newDate ,
                 userId: (data.user as any).id
             })
         } catch (error) {
             console.error(error)
-        }
+       } finally {
+        setSubmitIsLoading(false)
+       }
     }
 
     const formattedPrice = new Intl.NumberFormat('pt-BR', {
@@ -101,7 +106,7 @@ const ServiceItem = ({ service, barbershop, isAuth}: ServiceItemProps) => {
                                     <SheetTitle>Fazer reserva</SheetTitle>
                                 </SheetHeader>
 
-                                <div className="py-4">
+                                <div className="py-4 w-full">
                                     <Calendar
                                     mode="single"
                                     selected={date}
@@ -174,17 +179,18 @@ const ServiceItem = ({ service, barbershop, isAuth}: ServiceItemProps) => {
                                             )}
 
                                             {/* TODOOOOO */}
-                                            {/* <div className="flex justify-between">
+                                            <div className="flex justify-between">
                                                     <h3 className="text-gray-400">Barbearia</h3>
                                                     <h4 className="text-sm">{barbershop.name}</h4>
-                                            </div> */}
+                                            </div>
 
 
                                         </CardContent>
                                     </Card>
                                 </div>
                                 <SheetFooter className="px-5">
-                                    <Button onClick={handleBookingSubmit} disabled={!hour || !date}>
+                                    <Button onClick={handleBookingSubmit} disabled={!hour || !date || submitIsLoading}>
+                                        {submitIsLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin"/>}
                                         Confirmar reserva
                                     </Button>
                                 </SheetFooter>
