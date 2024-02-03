@@ -9,11 +9,12 @@ import { Barbershop, Service } from "@prisma/client";
 import { intlFormat } from "date-fns/intlFormat";
 import { ptBR } from "date-fns/locale";
 import { Router } from "lucide-react";
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import Image from "next/image";
 import React, { useMemo, useState } from "react";
 import { generateDayTimeList } from "../_helpers/hours";
-import { format } from "date-fns";
+import { format, setHours, setMinutes } from "date-fns";
+import { saveBooking } from "../_actions/save-booking";
 
 interface ServiceItemProps {
     barbershop: Barbershop;
@@ -22,6 +23,8 @@ interface ServiceItemProps {
 }
 
 const ServiceItem = ({ service, barbershop, isAuth}: ServiceItemProps) => {
+
+    const {data} = useSession()
 
     const [date, setDate] = useState<Date | undefined>(undefined)
     const [hour, setHour] = useState<string | undefined>()
@@ -34,11 +37,35 @@ const ServiceItem = ({ service, barbershop, isAuth}: ServiceItemProps) => {
     const handleHourClick = (time:string) => {
         setHour(time)
     } 
+    
     const handleBookingClick = () => {
         if (!isAuth) {
             signIn("google")
         }
     }
+
+    const handleBookingSubmit = async() => {
+        try {
+            if (!hour || !date || !data?.user) {
+                return 
+            }
+
+            const dateHour = Number(hour.split(':')[0])
+            const dateMinutes = Number(hour.split(':')[1])
+
+            const newDate = setMinutes(setHours(date, dateHour), dateMinutes)
+
+            await saveBooking({
+                serviceId: service.id,
+                barbershopId: barbershop.id,
+                date: newDate as any,
+                userId: (data.user as any).id
+            })
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
     const formattedPrice = new Intl.NumberFormat('pt-BR', {
         style: 'currency',
         currency: 'BRL',
@@ -145,7 +172,7 @@ const ServiceItem = ({ service, barbershop, isAuth}: ServiceItemProps) => {
                                                     <h4 className="text-sm">{hour}</h4>
                                                 </div>
                                             )}
-                                            
+
                                             {/* TODOOOOO */}
                                             {/* <div className="flex justify-between">
                                                     <h3 className="text-gray-400">Barbearia</h3>
@@ -157,7 +184,7 @@ const ServiceItem = ({ service, barbershop, isAuth}: ServiceItemProps) => {
                                     </Card>
                                 </div>
                                 <SheetFooter className="px-5">
-                                    <Button disabled={!hour || !date}>
+                                    <Button onClick={handleBookingSubmit} disabled={!hour || !date}>
                                         Confirmar reserva
                                     </Button>
                                 </SheetFooter>
