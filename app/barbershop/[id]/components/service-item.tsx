@@ -15,6 +15,9 @@ import React, { useMemo, useState } from "react";
 import { generateDayTimeList } from "../_helpers/hours";
 import { format, setHours, setMinutes } from "date-fns";
 import { saveBooking } from "../_actions/save-booking";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+
 
 interface ServiceItemProps {
     barbershop: Barbershop;
@@ -23,13 +26,14 @@ interface ServiceItemProps {
 }
 
 const ServiceItem = ({ service, barbershop, isAuth}: ServiceItemProps) => {
-
+    const router = useRouter()
     const {data} = useSession()
 
     const [date, setDate] = useState<Date | undefined>(undefined)
     const [hour, setHour] = useState<string | undefined>()
 
     const [submitIsLoading, setSubmitIsLoading] = useState(false)
+    const [sheetisOpen, setSheetIsOpen] = useState(false)
     
     const handleDateClick = (date: Date | undefined) => {
         setDate(date)
@@ -64,6 +68,19 @@ const ServiceItem = ({ service, barbershop, isAuth}: ServiceItemProps) => {
                 date: newDate ,
                 userId: (data.user as any).id
             })
+
+            setSheetIsOpen(false)
+            setHour(undefined)
+            setDate(undefined)
+            toast("Reserva realizada com sucesso!", {
+                description: format(newDate, "'Para' dd 'de' MMMM 'às' HH': 'mm'.'", {
+                    locale: ptBR,
+                }),
+                action: {
+                label: "Visualizar",
+                onClick: () => router.push('/bookings'),
+                },
+            })
         } catch (error) {
             console.error(error)
        } finally {
@@ -96,7 +113,8 @@ const ServiceItem = ({ service, barbershop, isAuth}: ServiceItemProps) => {
 
                         <div className="flex items-center justify-between mt-3">
                             <p className="text-primary font-bold text-sm">{formattedPrice}</p>
-                        <Sheet>
+
+                        <Sheet open={sheetisOpen} onOpenChange={setSheetIsOpen}>
                                 <SheetTrigger asChild>
                                     <Button variant="secondary" onClick={handleBookingClick}>Reservar</Button>
                                 </SheetTrigger>
@@ -106,7 +124,7 @@ const ServiceItem = ({ service, barbershop, isAuth}: ServiceItemProps) => {
                                     <SheetTitle>Fazer reserva</SheetTitle>
                                 </SheetHeader>
 
-                                <div className="py-4 w-full">
+                                <div className="py-6">
                                     <Calendar
                                     mode="single"
                                     selected={date}
