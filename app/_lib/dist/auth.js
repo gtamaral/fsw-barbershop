@@ -1,5 +1,15 @@
-"use server";
 "use strict";
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -37,22 +47,28 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.CancelBooking = void 0;
-var cache_1 = require("next/cache");
-var prisma_1 = require("../_lib/prisma");
-exports.CancelBooking = function (bookingId) { return __awaiter(void 0, void 0, void 0, function () {
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0: return [4 /*yield*/, prisma_1.db.booking["delete"]({
-                    where: {
-                        id: bookingId
-                    }
-                })];
-            case 1:
-                _a.sent();
-                cache_1.revalidatePath("/");
-                cache_1.revalidatePath("/bookings");
-                return [2 /*return*/];
+exports.authOptions = void 0;
+var prisma_adapter_1 = require("@auth/prisma-adapter");
+var prisma_1 = require("@/app/_lib/prisma");
+var google_1 = require("next-auth/providers/google");
+exports.authOptions = {
+    adapter: prisma_adapter_1.PrismaAdapter(prisma_1.db),
+    providers: [
+        google_1["default"]({
+            clientId: process.env.GOOGLE_CLIENT_ID,
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET
+        }),
+    ],
+    callbacks: {
+        session: function (_a) {
+            var session = _a.session, user = _a.user;
+            return __awaiter(this, void 0, void 0, function () {
+                return __generator(this, function (_b) {
+                    session.user = __assign(__assign({}, session.user), { id: user.id });
+                    return [2 /*return*/, session];
+                });
+            });
         }
-    });
-}); };
+    },
+    secret: process.env.NEXTAUTH_URL
+};

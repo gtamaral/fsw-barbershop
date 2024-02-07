@@ -49,6 +49,7 @@ var cancel_booking_1 = require("../_actions/cancel-booking");
 var sonner_1 = require("sonner");
 var react_1 = require("react");
 var lucide_react_1 = require("lucide-react");
+var alert_dialog_1 = require("./ui/alert-dialog");
 var BookingItem = function (_a) {
     var booking = _a.booking;
     var _b = react_1.useState(false), isDeleteLoading = _b[0], setIsDeleteLoading = _b[1];
@@ -87,7 +88,7 @@ var BookingItem = function (_a) {
             React.createElement(card_1.Card, { className: "min-w-full" },
                 React.createElement(card_1.CardContent, { className: "py-0 flex px-0" },
                     React.createElement("div", { className: "flex flex-col gap-2 py-5 flex-[3] pl-5" },
-                        React.createElement(badge_1.Badge, { variant: isBookingConfirmed ? "secondary" : "default", className: "bg-[#221C3D] text-primary hover:bg-[#221C3D] w-fit" }, isBookingConfirmed ? "Confirmado" : "Finalizado"),
+                        React.createElement(badge_1.Badge, { variant: isBookingConfirmed ? "default" : "secondary", className: "w-fit" }, isBookingConfirmed ? "Confirmado" : "Finalizado"),
                         React.createElement("h2", { className: "font-bold" }, booking.service.name),
                         React.createElement("div", { className: "flex items-center gap-2" },
                             React.createElement(avatar_1.Avatar, { className: "h-6 w-6" },
@@ -103,11 +104,11 @@ var BookingItem = function (_a) {
             React.createElement(sheet_1.SheetHeader, { className: "px-5 text-left pb-6 border-b border-solid border-secondary" },
                 React.createElement(sheet_1.SheetTitle, null, "Informa\u00E7\u00F5es da reserva")),
             React.createElement("div", { className: "px-5" },
-                React.createElement("div", { className: "relative h-[180px] w-full mt-5" },
-                    React.createElement(image_1["default"], { src: "/barbercard", fill: true, style: {
+                React.createElement("div", { className: "relative h-[180px] w-full mt-6" },
+                    React.createElement(image_1["default"], { src: "/barbercard.png", fill: true, style: {
                             objectFit: 'contain'
                         }, alt: booking.barbershop.name }),
-                    React.createElement("div", { className: "w-[90%] absolute bottom-4 left-0 px-5" },
+                    React.createElement("div", { className: "w-full absolute bottom-4 left-0 px-5" },
                         React.createElement(card_1.Card, { className: "" },
                             React.createElement(card_1.CardContent, { className: "p-3 flex gap-2" },
                                 React.createElement(avatar_1.Avatar, null,
@@ -132,11 +133,22 @@ var BookingItem = function (_a) {
                         React.createElement("div", { className: "flex justify-between" },
                             React.createElement("h3", { className: "text-gray-400" }, "Barbearia"),
                             React.createElement("h4", { className: "text-sm" }, booking.barbershop.name)))),
-                React.createElement(sheet_1.SheetFooter, { className: "flex-row gap-3 mt-6" },
+                React.createElement(sheet_1.SheetFooter, { className: "flex-row gap-3 mt-6 pb-8 " },
                     React.createElement(sheet_1.SheetClose, { asChild: true },
                         React.createElement(button_1.Button, { className: "w-full", variant: "secondary" }, "Voltar")),
-                    React.createElement(button_1.Button, { onClick: handleCancelClick, disabled: !isBookingConfirmed || isDeleteLoading, className: "w-full", variant: "destructive" },
-                        isDeleteLoading && (React.createElement(lucide_react_1.Loader2, { className: "mr-2 h-4 w-4 animate-spin" })),
-                        "Cancelar reserva"))))));
+                    React.createElement(alert_dialog_1.AlertDialog, null,
+                        React.createElement(alert_dialog_1.AlertDialogTrigger, { asChild: true },
+                            React.createElement(button_1.Button, { disabled: !isBookingConfirmed || isDeleteLoading, className: "w-full ", variant: "destructive" },
+                                isDeleteLoading && (React.createElement(lucide_react_1.Loader2, { className: "mr-2 h-4 w-4 animate-spin" })),
+                                "Cancelar reserva")),
+                        React.createElement(alert_dialog_1.AlertDialogContent, { className: "w-[90%]" },
+                            React.createElement(alert_dialog_1.AlertDialogHeader, null,
+                                React.createElement(alert_dialog_1.AlertDialogTitle, null, "Voc\u00EA tem certeza que vai cancelar?"),
+                                React.createElement(alert_dialog_1.AlertDialogDescription, null, "Uma vez cancelado, n\u00E3o tem como voltar atr\u00E1s.")),
+                            React.createElement(alert_dialog_1.AlertDialogFooter, { className: "flex-row gap-3" },
+                                React.createElement(alert_dialog_1.AlertDialogCancel, { className: "w-full mt-0" }, "Voltar"),
+                                React.createElement(alert_dialog_1.AlertDialogAction, { disabled: isDeleteLoading, className: "w-full", onClick: handleCancelClick },
+                                    isDeleteLoading && (React.createElement(lucide_react_1.Loader2, { className: "mr-2 h-4 w-4 animate-spin" })),
+                                    "Confirmar")))))))));
 };
 exports["default"] = BookingItem;

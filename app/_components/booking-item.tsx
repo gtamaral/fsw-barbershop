@@ -13,6 +13,7 @@ import { CancelBooking } from "../_actions/cancel-booking";
 import { toast } from "sonner";
 import { useState } from "react";
 import { Loader2 } from "lucide-react";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "./ui/alert-dialog";
 
 interface BookingItemProps {
     booking: Prisma.BookingGetPayload<{
@@ -51,8 +52,8 @@ const BookingItem = ({booking}: BookingItemProps) => {
                 <CardContent className="py-0 flex px-0">
                     <div className="flex flex-col gap-2 py-5 flex-[3] pl-5">
                         <Badge variant={
-                            isBookingConfirmed ? "secondary" : "default"
-                        } className="bg-[#221C3D] text-primary hover:bg-[#221C3D] w-fit">{isBookingConfirmed ? "Confirmado": "Finalizado"}</Badge>
+                            isBookingConfirmed ? "default" : "secondary"
+                        } className="w-fit">{isBookingConfirmed ? "Confirmado": "Finalizado"}</Badge>
                         <h2 className="font-bold">{booking.service.name}</h2>
 
                         <div className="flex items-center gap-2">
@@ -82,12 +83,12 @@ const BookingItem = ({booking}: BookingItemProps) => {
                 </SheetHeader>
 
                 <div className="px-5">
-                    <div className="relative h-[180px] w-full mt-5">
-                        <Image src="/barbercard" fill style={{
+                    <div className="relative h-[180px] w-full mt-6">
+                        <Image src="/barbercard.png" fill style={{
                             objectFit: 'contain'
-                        }} alt={booking.barbershop.name}/>
+                        }} alt={booking.barbershop.name} />
 
-                <div className="w-[90%] absolute bottom-4 left-0 px-5">
+                <div className="w-full absolute bottom-4 left-0 px-5">
                     <Card className="">
                         <CardContent className="p-3 flex gap-2">
                             <Avatar >
@@ -139,18 +140,43 @@ const BookingItem = ({booking}: BookingItemProps) => {
                                         </CardContent>
                 </Card>
 
-                <SheetFooter className="flex-row gap-3 mt-6">
+                <SheetFooter className="flex-row gap-3 mt-6 pb-8 ">
                     <SheetClose asChild>
                         <Button className="w-full" variant="secondary">
                         Voltar
                     </Button>
                     </SheetClose>
-                    <Button onClick={handleCancelClick} disabled={!isBookingConfirmed || isDeleteLoading}className="w-full" variant="destructive">
+
+
+                <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                         <Button disabled={!isBookingConfirmed || isDeleteLoading}className="w-full " variant="destructive">
                         {isDeleteLoading && (
                             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                         )}
                         Cancelar reserva
                     </Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent className="w-[90%]">
+                        <AlertDialogHeader>
+                        <AlertDialogTitle>Você tem certeza que vai cancelar?</AlertDialogTitle>
+                        <AlertDialogDescription>
+                            Uma vez cancelado, não tem como voltar atrás.
+                        </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter className="flex-row gap-3">
+                        <AlertDialogCancel className="w-full mt-0">Voltar</AlertDialogCancel>
+                        <AlertDialogAction disabled={isDeleteLoading} className="w-full" onClick={handleCancelClick}>
+                            {isDeleteLoading && (
+                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                            )}
+                        Confirmar
+                        </AlertDialogAction>
+                        </AlertDialogFooter>
+                    </AlertDialogContent>
+                </AlertDialog>
+
+                   
                 </SheetFooter>
                 </div>
 

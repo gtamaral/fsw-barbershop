@@ -10,8 +10,8 @@ import BookingItem from "../_components/booking-item";
 import BarbershopItem from "./_components/barbershop-item";
 
 import { getServerSession } from "next-auth";
-import { authOptions } from "../api/auth/[...nextauth]/route";
 import { db } from "../_lib/prisma";
+import { authOptions } from "../_lib/auth";
 
 
 export default async function Home() {
@@ -42,7 +42,7 @@ export default async function Home() {
       <Header />
 
       <div className="px-5 pt-5">
-        <h2 className="text-xl font-bold">Olá, Rodrigo!</h2>
+        <h2 className="text-xl font-bold">{session?.user ? `Olá, ${session.user.name?.split(" ")[0]!}` : "Olá, vamos agendar um corte?"}</h2>
       <p className="capitalize text-sm text-gray-400 mt-1">{format(new Date(), "EEEE','d 'de' MMMM",{
         locale: ptBR,
       }
@@ -81,7 +81,7 @@ export default async function Home() {
         <h2 className="text-xs px-5 mb-3 uppercase text-gray-400 font-bold">Populares</h2>
 
         <div className="flex gap-2 px-5 overflow-x-auto [&::-webkit-scrollbar]:hidden">
-          {barbershops.map((barbershop: { id: Key | null | undefined; }) => (            
+          {barbershops.map((barbershop) => (            
               <BarbershopItem key={barbershop.id} barbershop={barbershop}/>
           ))}
         </div>

@@ -6,8 +6,8 @@ import Image from "next/image";
 import BarbershopInfo from "./components/barbershop-info";
 import ServiceItem from "./components/service-item";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { Key } from "react";
+import { authOptions } from "@/app/_lib/auth";
 
 interface BarbershopDetailsPageProps {
     params: {

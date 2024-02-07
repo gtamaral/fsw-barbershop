@@ -38,15 +38,15 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 exports.__esModule = true;
 var next_auth_1 = require("next-auth");
 var header_1 = require("../_components/header");
-var route_1 = require("../api/auth/[...nextauth]/route");
 var navigation_1 = require("next/navigation");
 var booking_item_1 = require("../_components/booking-item");
 var prisma_1 = require("../_lib/prisma");
+var auth_1 = require("../_lib/auth");
 var BookingsPage = function () { return __awaiter(void 0, void 0, void 0, function () {
     var session, _a, confirmedBookings, finishedBookings;
     return __generator(this, function (_b) {
         switch (_b.label) {
-            case 0: return [4 /*yield*/, next_auth_1.getServerSession(route_1.authOptions)
+            case 0: return [4 /*yield*/, next_auth_1.getServerSession(auth_1.authOptions)
                 // se ele nao estive logado, redirect para a pag de login
             ];
             case 1:
@@ -90,12 +90,14 @@ var BookingsPage = function () { return __awaiter(void 0, void 0, void 0, functi
                 // const finishedBookings = bookings.filter((booking: { date: any; }) => isPast(booking.date))
                 return [2 /*return*/, (React.createElement(React.Fragment, null,
                         React.createElement(header_1["default"], null),
-                        React.createElement("div", { className: "px-5 py-7" },
-                            React.createElement("h1", { className: "text-xl font-bold" }, "Agendamentos"),
-                            confirmedBookings.length > 0 && (React.createElement("h2", { className: "text-gray-400 uppercase font-bold text-sm mt-6 mb-3" }, "Confirmados")),
-                            React.createElement("div", { className: "flex flex-col gap-5" }, confirmedBookings.map(function (booking) { return React.createElement(booking_item_1["default"], { key: booking.id, booking: booking }); })),
-                            React.createElement("h2", { className: "text-gray-400 uppercase font-bold text-sm mt-6 mb-3" }, "Finalizados"),
-                            React.createElement("div", { className: "flex flex-col gap-3" }, finishedBookings.map(function (booking) { return React.createElement(booking_item_1["default"], { key: booking.id, booking: booking }); })))))];
+                        React.createElement("div", { className: "px-5 py-6" },
+                            React.createElement("h1", { className: "text-xl font-bold mb-6" }, "Agendamentos"),
+                            confirmedBookings.length > 0 && (React.createElement(React.Fragment, null,
+                                React.createElement("h2", { className: "text-gray-400 uppercase font-bold text-sm mt-6 mb-3" }, "Confirmados"),
+                                React.createElement("div", { className: "flex flex-col gap-5" }, confirmedBookings.map(function (booking) { return (React.createElement(booking_item_1["default"], { key: booking.id, booking: booking })); })))),
+                            finishedBookings.length > 0 && (React.createElement(React.Fragment, null,
+                                React.createElement("h2", { className: "text-gray-400 uppercase font-bold text-sm mt-6 mb-3" }, "Finalizados"),
+                                React.createElement("div", { className: "flex flex-col gap-3" }, finishedBookings.map(function (booking) { return (React.createElement(booking_item_1["default"], { key: booking.id, booking: booking })); })))))))];
         }
     });
 }); };

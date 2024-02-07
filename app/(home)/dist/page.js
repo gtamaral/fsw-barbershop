@@ -45,16 +45,17 @@ var booking_item_1 = require("../_components/booking-item");
 // db
 var barbershop_item_1 = require("./_components/barbershop-item");
 var next_auth_1 = require("next-auth");
-var route_1 = require("../api/auth/[...nextauth]/route");
 var prisma_1 = require("../_lib/prisma");
+var auth_1 = require("../_lib/auth");
 function Home() {
+    var _a;
     return __awaiter(this, void 0, void 0, function () {
-        var session, _a, barbershops, confirmedBookings;
-        return __generator(this, function (_b) {
-            switch (_b.label) {
-                case 0: return [4 /*yield*/, next_auth_1.getServerSession(route_1.authOptions)];
+        var session, _b, barbershops, confirmedBookings;
+        return __generator(this, function (_c) {
+            switch (_c.label) {
+                case 0: return [4 /*yield*/, next_auth_1.getServerSession(auth_1.authOptions)];
                 case 1:
-                    session = _b.sent();
+                    session = _c.sent();
                     return [4 /*yield*/, Promise.all([
                             prisma_1.db.barbershop.findMany({}),
                             (session === null || session === void 0 ? void 0 : session.user) ? prisma_1.db.booking.findMany({
@@ -72,13 +73,13 @@ function Home() {
                                 : Promise.resolve([])
                         ])];
                 case 2:
-                    _a = _b.sent(), barbershops = _a[0], confirmedBookings = _a[1];
+                    _b = _c.sent(), barbershops = _b[0], confirmedBookings = _b[1];
                     return [2 /*return*/, (
                         // chamar prisma e pegar barbearias
                         React.createElement("div", null,
                             React.createElement(header_1["default"], null),
                             React.createElement("div", { className: "px-5 pt-5" },
-                                React.createElement("h2", { className: "text-xl font-bold" }, "Ol\u00E1, Rodrigo!"),
+                                React.createElement("h2", { className: "text-xl font-bold" }, (session === null || session === void 0 ? void 0 : session.user) ? "Ol\u00E1, " + ((_a = session.user.name) === null || _a === void 0 ? void 0 : _a.split(" ")[0]) : "Olá, vamos agendar um corte?"),
                                 React.createElement("p", { className: "capitalize text-sm text-gray-400 mt-1" }, date_fns_1.format(new Date(), "EEEE','d 'de' MMMM", {
                                     locale: locale_1.ptBR
                                 }))),
