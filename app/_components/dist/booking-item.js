@@ -8,11 +8,11 @@ var locale_1 = require("date-fns/locale");
 var BookingItem = function (_a) {
     var booking = _a.booking;
     var isBookingConfirmed = date_fns_1.isFuture(booking.date);
-    return (React.createElement(card_1.Card, null,
+    return (React.createElement(card_1.Card, { className: "min-w-full" },
         React.createElement(card_1.CardContent, { className: "py-0 flex px-0" },
             React.createElement("div", { className: "flex flex-col gap-2 py-5 flex-[3] pl-5" },
                 React.createElement(badge_1.Badge, { variant: isBookingConfirmed ? "secondary" : "default", className: "bg-[#221C3D] text-primary hover:bg-[#221C3D] w-fit" }, isBookingConfirmed ? "Confirmado" : "Finalizado"),
-                React.createElement("h2", { className: "text-xl font-bold" }, booking.service.name),
+                React.createElement("h2", { className: "font-bold" }, booking.service.name),
                 React.createElement("div", { className: "flex items-center gap-2" },
                     React.createElement(avatar_1.Avatar, { className: "h-6 w-6" },
                         React.createElement(avatar_1.AvatarImage, { src: booking.barbershop.imageUrl })),

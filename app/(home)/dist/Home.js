@@ -37,42 +37,36 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 exports.__esModule = true;
 var header_1 = require("../_components/header");
-// datefns
 var date_fns_1 = require("date-fns");
 var locale_1 = require("date-fns/locale");
 var search_1 = require("./_components/search");
 var booking_item_1 = require("../_components/booking-item");
-// db
+var prisma_1 = require("../_lib/prisma");
 var barbershop_item_1 = require("./_components/barbershop-item");
 var next_auth_1 = require("next-auth");
 var route_1 = require("../api/auth/[...nextauth]/route");
-var prisma_1 = require("../_lib/prisma");
 function Home() {
     return __awaiter(this, void 0, void 0, function () {
-        var session, _a, barbershops, confirmedBookings;
-        return __generator(this, function (_b) {
-            switch (_b.label) {
+        var session, barbershops, bookings;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
                 case 0: return [4 /*yield*/, next_auth_1.getServerSession(route_1.authOptions)];
                 case 1:
-                    session = _b.sent();
-                    return [4 /*yield*/, Promise.all([
-                            prisma_1.db.barbershop.findMany({}),
-                            (session === null || session === void 0 ? void 0 : session.user) ? prisma_1.db.booking.findMany({
-                                where: {
-                                    userId: session.user.id,
-                                    date: {
-                                        gte: new Date()
-                                    }
-                                },
-                                include: {
-                                    service: true,
-                                    barbershop: true
-                                }
-                            })
-                                : Promise.resolve([])
-                        ])];
+                    session = _a.sent();
+                    return [4 /*yield*/, prisma_1.db.barbershop.findMany({})];
                 case 2:
-                    _a = _b.sent(), barbershops = _a[0], confirmedBookings = _a[1];
+                    barbershops = _a.sent();
+                    return [4 /*yield*/, prisma_1.db.booking.findMany({
+                            where: {
+                                userId: session.user.id
+                            },
+                            include: {
+                                service: true,
+                                barbershop: true
+                            }
+                        })];
+                case 3:
+                    bookings = _a.sent();
                     return [2 /*return*/, (
                         // chamar prisma e pegar barbearias
                         React.createElement("div", null,
@@ -84,9 +78,12 @@ function Home() {
                                 }))),
                             React.createElement("div", { className: "px-5 mt-6" },
                                 React.createElement(search_1["default"], null)),
-                            React.createElement("div", { className: "mt-6" }, confirmedBookings.length > 0 && (React.createElement(React.Fragment, null,
-                                React.createElement("h2", { className: "pl-5 text-xs mb-3 uppercase text-gray-400 font-bold" }, "Agendamentos"),
-                                React.createElement("div", { className: "px-5 flex gap-3 overflow-x-auto [&::-webkit-scrollbar]:hidden" }, confirmedBookings.map(function (booking) { return (React.createElement(booking_item_1["default"], { key: booking.id, booking: booking })); }))))),
+                            React.createElement("div", { className: "px-5 mt-6" },
+                                React.createElement("h2", { className: "text-xs mb-3 uppercase text-gray-400 font-bold" }, "Agendamentos"),
+                                bookings.map(function (booking) {
+                                    React.createElement(booking_item_1["default"], { key: booking.id, booking: booking });
+                                }),
+                                "console.log(bookings)"),
                             React.createElement("div", { className: "mt-6" },
                                 React.createElement("h2", { className: "text-xs px-5 mb-3 uppercase text-gray-400 font-bold" }, "Recomendados"),
                                 React.createElement("div", { className: "flex gap-2 px-5 overflow-x-auto [&::-webkit-scrollbar]:hidden" }, barbershops.map(function (barbershop) { return (React.createElement(barbershop_item_1["default"], { key: barbershop.id, barbershop: barbershop })); }))),

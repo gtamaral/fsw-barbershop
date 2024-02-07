@@ -42,33 +42,52 @@ var route_1 = require("../api/auth/[...nextauth]/route");
 var navigation_1 = require("next/navigation");
 var booking_item_1 = require("../_components/booking-item");
 var prisma_1 = require("../_lib/prisma");
-var date_fns_1 = require("date-fns");
 var BookingsPage = function () { return __awaiter(void 0, void 0, void 0, function () {
-    var session, bookings, confirmedBookings, finishedBookings;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
+    var session, _a, confirmedBookings, finishedBookings;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
             case 0: return [4 /*yield*/, next_auth_1.getServerSession(route_1.authOptions)
                 // se ele nao estive logado, redirect para a pag de login
             ];
             case 1:
-                session = _a.sent();
+                session = _b.sent();
                 // se ele nao estive logado, redirect para a pag de login
                 if (!(session === null || session === void 0 ? void 0 : session.user)) {
                     return [2 /*return*/, navigation_1.redirect("/")];
                 }
-                return [4 /*yield*/, prisma_1.db.booking.findMany({
-                        where: {
-                            userId: session.user.id
-                        },
-                        include: {
-                            service: true,
-                            barbershop: true
-                        }
-                    })];
+                return [4 /*yield*/, Promise.all([
+                        prisma_1.db.booking.findMany({
+                            where: {
+                                userId: session.user.id,
+                                date: {
+                                    gte: new Date()
+                                }
+                            },
+                            include: {
+                                service: true,
+                                barbershop: true
+                            }
+                        }),
+                        prisma_1.db.booking.findMany({
+                            where: {
+                                userId: session.user.id,
+                                date: {
+                                    lt: new Date()
+                                }
+                            },
+                            include: {
+                                service: true,
+                                barbershop: true
+                            }
+                        })
+                    ])
+                    // const confirmedBookings = bookings.filter((booking: { date: any; }) => isFuture(booking.date))
+                    // const finishedBookings = bookings.filter((booking: { date: any; }) => isPast(booking.date))
+                ];
             case 2:
-                bookings = _a.sent();
-                confirmedBookings = bookings.filter(function (booking) { return date_fns_1.isFuture(booking.date); });
-                finishedBookings = bookings.filter(function (booking) { return date_fns_1.isPast(booking.date); });
+                _a = _b.sent(), confirmedBookings = _a[0], finishedBookings = _a[1];
+                // const confirmedBookings = bookings.filter((booking: { date: any; }) => isFuture(booking.date))
+                // const finishedBookings = bookings.filter((booking: { date: any; }) => isPast(booking.date))
                 return [2 /*return*/, (React.createElement(React.Fragment, null,
                         React.createElement(header_1["default"], null),
                         React.createElement("div", { className: "px-5 py-7" },

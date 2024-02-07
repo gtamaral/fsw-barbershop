@@ -17,18 +17,37 @@ const BookingsPage = async () => {
         return redirect("/");
     }
 
-    const bookings = await db.booking.findMany({
+
+    const [confirmedBookings, finishedBookings] = await Promise.all([
+         db.booking.findMany({
         where: {
             userId: (session.user as any).id,
+            date: {
+                gte: new Date(),
+            }
+        },
+        include: {
+            service: true,
+            barbershop: true,
+        },
+    }),
+    db.booking.findMany({
+        where: {
+            userId: (session.user as any).id,
+            date: {
+                lt: new Date(),
+            }
         },
         include: {
             service: true,
             barbershop: true,
         }
-    });
+    })
 
-    const confirmedBookings = bookings.filter((booking: { date: any; }) => isFuture(booking.date))
-    const finishedBookings = bookings.filter((booking: { date: any; }) => isPast(booking.date))
+    ])
+
+    // const confirmedBookings = bookings.filter((booking: { date: any; }) => isFuture(booking.date))
+    // const finishedBookings = bookings.filter((booking: { date: any; }) => isPast(booking.date))
 
 
     return ( 
@@ -40,12 +59,12 @@ const BookingsPage = async () => {
 
                 <h2 className="text-gray-400 uppercase font-bold text-sm mt-6 mb-3">Confirmados</h2>
                 <div className="flex flex-col gap-5">
-                    {confirmedBookings.map((booking: { id: Key | null | undefined; }) => <BookingItem key={booking.id} booking={booking} />)}
+                    {confirmedBookings.map((booking) => <BookingItem key={booking.id} booking={booking} />)}
                 </div>
 
                 <h2 className="text-gray-400 uppercase font-bold text-sm mt-6 mb-3">Finalizados</h2>
                 <div className="flex flex-col gap-5">
-                    {finishedBookings.map((booking: { id: Key | null | undefined; }) => <BookingItem key={booking.id} booking={booking} />)}
+                    {finishedBookings.map((booking) => <BookingItem key={booking.id} booking={booking} />)}
                 </div>
 
             </div>

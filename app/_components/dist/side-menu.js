@@ -4,7 +4,6 @@ exports.__esModule = true;
 var react_1 = require("next-auth/react");
 var sheet_1 = require("./ui/sheet");
 var avatar_1 = require("./ui/avatar");
-var react_avatar_1 = require("@radix-ui/react-avatar");
 var button_1 = require("./ui/button");
 var lucide_react_1 = require("lucide-react");
 var link_1 = require("next/link");
@@ -20,11 +19,11 @@ var SideMenu = function () {
     return (React.createElement(React.Fragment, null,
         React.createElement(sheet_1.SheetHeader, { className: "text-left border-b border-solid border-secondary p-5" },
             React.createElement(sheet_1.SheetTitle, null,
-                React.createElement("h1", { className: "text-2xl font-bold" }, "Menu"))),
+                React.createElement("h1", { className: "" }, "Menu"))),
         (data === null || data === void 0 ? void 0 : data.user) ? (React.createElement("div", { className: "flex justify-between px-5 py-6 items-center" },
             React.createElement("div", { className: "flex items-center gap-3" },
                 React.createElement(avatar_1.Avatar, null,
-                    React.createElement(react_avatar_1.AvatarImage, { src: (_b = (_a = data.user) === null || _a === void 0 ? void 0 : _a.image) !== null && _b !== void 0 ? _b : '' })),
+                    React.createElement(avatar_1.AvatarImage, { src: (_b = (_a = data.user) === null || _a === void 0 ? void 0 : _a.image) !== null && _b !== void 0 ? _b : '' })),
                 React.createElement("h2", { className: "font-bold" }, data.user.name)),
             React.createElement(button_1.Button, { variant: "secondary", size: "icon" },
                 React.createElement(lucide_react_1.LogOutIcon, { onClick: handleLogoutClick })))) : (React.createElement("div", { className: "flex flex-col px-5 py-6 gap-3" },

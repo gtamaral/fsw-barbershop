@@ -139,7 +139,7 @@ const ServiceItem = ({ service, barbershop, isAuth}: ServiceItemProps) => {
 
     return (  
         <Card>
-            <CardContent className="p-3  w-full">
+            <CardContent className="p-3 w-full ">
                 <div className="flex gap-4 items-center w-full">
                     <div className="relative min-h-[110px] min-w-[110px] max-h-[110px] max-w-[110px]">
                         <Image className="rounded-lg" src={service.imageUrl} fill style={{objectFit: "contain"}} alt={service.name}/>
@@ -157,7 +157,7 @@ const ServiceItem = ({ service, barbershop, isAuth}: ServiceItemProps) => {
                                     <Button variant="secondary" onClick={handleBookingClick}>Reservar</Button>
                                 </SheetTrigger>
 
-                                <SheetContent className="p-0">
+                                <SheetContent className="p-0 overflow-y-auto h-screen &[::-webkit-scrollbar]:hidden">
                                     <SheetHeader className="text-left px-4 py-5 border-b border-solid border-secondary">
                                     <SheetTitle>Fazer reserva</SheetTitle>
                                 </SheetHeader>
@@ -244,7 +244,7 @@ const ServiceItem = ({ service, barbershop, isAuth}: ServiceItemProps) => {
                                         </CardContent>
                                     </Card>
                                 </div>
-                                <SheetFooter className="px-5">
+                                <SheetFooter className="px-5 py-4">
                                     <Button onClick={handleBookingSubmit} disabled={!hour || !date || submitIsLoading}>
                                         {submitIsLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin"/>}
                                         Confirmar reserva

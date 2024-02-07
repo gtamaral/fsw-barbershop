@@ -2,8 +2,7 @@
 
 import { signIn, signOut, useSession } from "next-auth/react";
 import { SheetContent, SheetHeader, SheetTitle } from "./ui/sheet";
-import { Avatar } from "./ui/avatar";
-import { AvatarImage } from "@radix-ui/react-avatar";
+import { Avatar, AvatarImage } from "./ui/avatar";
 import { Button } from "./ui/button";
 import { CalendarIcon, HomeIcon, LogInIcon, LogOutIcon, UserIcon } from "lucide-react";
 import Link from "next/link";
@@ -22,7 +21,7 @@ const SideMenu = () => {
             
                         <SheetHeader className="text-left border-b border-solid border-secondary p-5">
                             <SheetTitle>
-                                <h1 className="text-2xl font-bold">Menu</h1>
+                                <h1 className="">Menu</h1>
                             </SheetTitle>
                         </SheetHeader>
 
