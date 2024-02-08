@@ -1,21 +1,20 @@
 "use client"
 
-import { signIn, signOut, useSession } from "next-auth/react";
-import { SheetContent, SheetHeader, SheetTitle } from "./ui/sheet";
-import { Avatar, AvatarImage } from "./ui/avatar";
-import { Button } from "./ui/button";
-import { CalendarIcon, HomeIcon, LogInIcon, LogOutIcon, UserIcon } from "lucide-react";
-import Link from "next/link";
+import { CalendarIcon, HomeIcon, LogInIcon, LogOutIcon, UserIcon } from "lucide-react"
+import { Avatar, AvatarImage } from "./ui/avatar"
+import { Button } from "./ui/button"
+import { SheetHeader, SheetTitle } from "./ui/sheet"
+import Link from "next/link"
+import { signIn, signOut, useSession } from "next-auth/react"
+
 
 const SideMenu = () => {
     const {data} = useSession()
 
-    const handleLogoutClick = () => {
-        signOut()
-    }
-    const handleLoginClik = () => {
-        signIn("google")
-    }
+    const handleLogoutClick = () => signOut()
+
+    const handleLoginClik = () => signIn("google")
+    
     return ( 
         <>
             

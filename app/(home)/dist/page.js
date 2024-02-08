@@ -37,16 +37,14 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 exports.__esModule = true;
 var header_1 = require("../_components/header");
-// datefns
-var date_fns_1 = require("date-fns");
-var locale_1 = require("date-fns/locale");
 var search_1 = require("./_components/search");
 var booking_item_1 = require("../_components/booking-item");
-// db
 var barbershop_item_1 = require("./_components/barbershop-item");
 var next_auth_1 = require("next-auth");
-var prisma_1 = require("../_lib/prisma");
 var auth_1 = require("../_lib/auth");
+var prisma_1 = require("../_lib/prisma");
+var format_1 = require("date-fns/format");
+var locale_1 = require("date-fns/locale");
 function Home() {
     var _a;
     return __awaiter(this, void 0, void 0, function () {
@@ -80,7 +78,7 @@ function Home() {
                             React.createElement(header_1["default"], null),
                             React.createElement("div", { className: "px-5 pt-5" },
                                 React.createElement("h2", { className: "text-xl font-bold" }, (session === null || session === void 0 ? void 0 : session.user) ? "Ol\u00E1, " + ((_a = session.user.name) === null || _a === void 0 ? void 0 : _a.split(" ")[0]) : "Olá, vamos agendar um corte?"),
-                                React.createElement("p", { className: "capitalize text-sm text-gray-400 mt-1" }, date_fns_1.format(new Date(), "EEEE','d 'de' MMMM", {
+                                React.createElement("p", { className: "capitalize text-sm text-gray-400 mt-1" }, format_1.format(new Date(), "EEEE','d 'de' MMMM", {
                                     locale: locale_1.ptBR
                                 }))),
                             React.createElement("div", { className: "px-5 mt-6" },

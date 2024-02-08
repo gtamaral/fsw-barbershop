@@ -1,28 +1,21 @@
 "use client";
 
-import Image from "next/image"
-import {Card, CardContent} from "./ui/card"
-import {Button} from "./ui/button"
-import { MenuIcon } from "lucide-react";
-import { signIn, signOut, useSession } from "next-auth/react";
-import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
-import SideMenu from "./side-menu";
+
+import { Card, CardContent } from "./ui/card";
 import Link from "next/link";
+import Image from "next/image";
+import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
+import { Button } from "./ui/button";
+import { MenuIcon } from "lucide-react";
+import SideMenu from "./side-menu";
+
+
 
 const Header = () => {
 
-    const {data, status} = useSession()
-
-    const handleLogoutClick = () => {
-        signOut()
-    }
-    const handleLoginClik = () => {
-        signIn("google")
-    }
-
     return ( 
-        
-        <Card>
+        <header>
+            <Card>
             <CardContent className="p-5 flex justify-between flex-row items-center">
                 <Link href="/">
                 <Image src="/logo.png" alt="logo fsw" height={18} width={120} />
@@ -42,6 +35,7 @@ const Header = () => {
                 </Sheet>                
             </CardContent>
         </Card>
+        </header>
      );
 }
  

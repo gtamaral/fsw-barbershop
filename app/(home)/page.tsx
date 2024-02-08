@@ -1,17 +1,14 @@
-import Header from "../_components/header";
 
-// datefns
-import { format } from "date-fns"
-import {ptBR} from "date-fns/locale"
+
+import Header from "../_components/header";
 import Search from "./_components/search";
 import BookingItem from "../_components/booking-item";
-
-// db
 import BarbershopItem from "./_components/barbershop-item";
-
 import { getServerSession } from "next-auth";
-import { db } from "../_lib/prisma";
 import { authOptions } from "../_lib/auth";
+import { db } from "../_lib/prisma";
+import { format } from "date-fns/format";
+import { ptBR } from "date-fns/locale";
 
 
 export default async function Home() {

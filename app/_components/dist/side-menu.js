@@ -1,21 +1,17 @@
 "use client";
 "use strict";
 exports.__esModule = true;
-var react_1 = require("next-auth/react");
-var sheet_1 = require("./ui/sheet");
+var lucide_react_1 = require("lucide-react");
 var avatar_1 = require("./ui/avatar");
 var button_1 = require("./ui/button");
-var lucide_react_1 = require("lucide-react");
+var sheet_1 = require("./ui/sheet");
 var link_1 = require("next/link");
+var react_1 = require("next-auth/react");
 var SideMenu = function () {
     var _a, _b;
     var data = react_1.useSession().data;
-    var handleLogoutClick = function () {
-        react_1.signOut();
-    };
-    var handleLoginClik = function () {
-        react_1.signIn("google");
-    };
+    var handleLogoutClick = function () { return react_1.signOut(); };
+    var handleLoginClik = function () { return react_1.signIn("google"); };
     return (React.createElement(React.Fragment, null,
         React.createElement(sheet_1.SheetHeader, { className: "text-left border-b border-solid border-secondary p-5" },
             React.createElement(sheet_1.SheetTitle, null,
